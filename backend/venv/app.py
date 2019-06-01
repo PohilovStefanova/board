@@ -101,3 +101,41 @@ def create_thread():
         return 'Not all parameters sent!'
 
     return JSONEncoder().encode(output)
+
+
+@app.route('/api/replies', methods=['POST'])
+def post_reply():
+    threads = mongo.db.threads
+    try:
+        # Полуение информации из запроса
+        thread_id = ObjectId(request.json['thread_id'])
+        delete_password = request.json['delete_password']
+        text = request.json['text']
+
+        thread = threads.find_one({"_id": thread_id})
+        if thread:
+            # Тред найден
+            threads.update({
+                "_id": thread_id}, 
+                {
+                    # Добавляем в массив ответов новый ответ, присваивая ему случайный _id
+                    '$push': {
+                        'replies': {'_id': str(uuid.uuid4()),'text': text, 'created_on': getCurrTime()}
+                    },
+                    # Обновляем поле updated_on треда
+                    '$set': {
+                        'updated_on': getCurrTime()
+                    }
+
+            })
+            return 'Success'
+        else:
+            # Тред не найден
+            return 'Thread not found'
+    except KeyError:
+        # Неверный запрос
+        return 'Not all parameters sent!'
+    except Exception as Exc:
+        # Другая ошибка
+        print(Exc)
+        return 'Something went wrong'
