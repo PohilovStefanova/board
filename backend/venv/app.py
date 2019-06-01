@@ -80,9 +80,14 @@ def create_thread():
     threads = mongo.db.threads
 
     try:
+        # Полуение информации из запроса
         text = request.json['text']
         delete_password = request.json['delete_password']
+
+        # Время записи
         currTime = getCurrTime()
+
+        # Делаем новую запись
         thread_id = threads.insert({
             'text': text,
             "created_on": currTime,
@@ -90,6 +95,8 @@ def create_thread():
             'delete_password': delete_password,
             'replies': []
         })
+
+        # Находим запись и возвращаем ее
         new_thread = threads.find_one({'_id': thread_id})
         output = {
             'text': new_thread['text'],
@@ -98,6 +105,7 @@ def create_thread():
         }
 
     except KeyError:
+        # Параметра не хватает
         return 'Not all parameters sent!'
 
     return JSONEncoder().encode(output)
@@ -116,11 +124,15 @@ def post_reply():
         if thread:
             # Тред найден
             threads.update({
-                "_id": thread_id}, 
+                "_id": thread_id},
                 {
-                    # Добавляем в массив ответов новый ответ, присваивая ему случайный _id
+                    # Добавляем в массив ответов новый ответ + случайный _id
                     '$push': {
-                        'replies': {'_id': str(uuid.uuid4()),'text': text, 'created_on': getCurrTime()}
+                        'replies': {
+                            '_id': str(uuid.uuid4()),
+                            'text': text,
+                            'created_on': getCurrTime()
+                        }
                     },
                     # Обновляем поле updated_on треда
                     '$set': {
