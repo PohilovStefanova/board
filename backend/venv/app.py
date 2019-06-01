@@ -67,8 +67,8 @@ def get_replies(thread_id):
         output = {
             '_id': thread['_id'],
             'text': thread['text'],
-            'created_on': doc['created_on'],
-            'updated_on': doc['updated_on'],
+            'created_on': thread['created_on'],
+            'updated_on': thread['updated_on'],
             'replies': thread['replies']
         }
     else:
@@ -165,3 +165,34 @@ def delete_all():
     except Exception as e:
         return e
         print(e)
+
+
+@app.route('/api/threads', methods=['DELETE'])
+def delete_thread():
+    threads = mongo.db.threads
+    try:
+        # Получение информации из запроса
+        thread_id = ObjectId(request.json['thread_id'])
+        delete_password = request.json['delete_password']
+
+        thread = threads.find_one({'_id': thread_id})
+        
+        if thread:
+            # Тред найден
+            if thread['delete_password'] == delete_password:
+                # Пароль совпадает
+                threads.delete_one({'_id': thread_id})
+                return 'Success'
+            else:
+                # Пароль неверный
+                return 'Wrong password'
+        else:
+            return 'Thread not found'
+
+    except KeyError:
+        return 'Not all parameters sent!'
+
+    except Exception as e:
+        print(e)
+        return 'Something went wrong'
+
