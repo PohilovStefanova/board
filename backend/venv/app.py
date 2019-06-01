@@ -49,6 +49,9 @@ def get_threads():
             'updated_on': doc['updated_on'],
             'replies': doc['replies']
         })
+    
+    # Сортировка output по updated_on
+    output.sort(key = lambda x: datetime.datetime.strptime(x['updated_on'], "%Y-%m-%d %H:%M:%S"), reverse = True)
     return JSONEncoder().encode(output)
 
 
@@ -151,3 +154,14 @@ def post_reply():
         # Другая ошибка
         print(Exc)
         return 'Something went wrong'
+
+# Удалить все треды
+@app.route('/api/deleteAll', methods=['DELETE'])
+def delete_all():
+    try:
+        threads = mongo.db.threads
+        threads.remove({})
+        return 'Success'
+    except Exception as e:
+        return e
+        print(e)
