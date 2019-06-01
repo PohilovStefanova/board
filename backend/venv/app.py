@@ -71,3 +71,33 @@ def get_replies(thread_id):
     else:
         output = 'No thread found'
     return JSONEncoder().encode(output)
+
+
+# POST метод по URL '/api/threads/' для создания нового треда.
+# Необходимые поля: text, delete_password
+@app.route('/api/threads', methods=['POST'])
+def create_thread():
+    threads = mongo.db.threads
+
+    try:
+        text = request.json['text']
+        delete_password = request.json['delete_password']
+        currTime = getCurrTime()
+        thread_id = threads.insert({
+            'text': text,
+            "created_on": currTime,
+            "updated_on": currTime,
+            'delete_password': delete_password,
+            'replies': []
+        })
+        new_thread = threads.find_one({'_id': thread_id})
+        output = {
+            'text': new_thread['text'],
+            'replies': new_thread['replies'],
+            '_id': new_thread['_id']
+        }
+
+    except KeyError:
+        return 'Not all parameters sent!'
+
+    return JSONEncoder().encode(output)
