@@ -35,7 +35,7 @@ def hello_world():
     return 'test test test'
 
 
-# GET метод по URL '/api/threads/' для получения всех тредов.
+# GET метод по URL '/api/threads' для получения всех тредов.
 @app.route('/api/threads', methods=['GET'])
 def get_threads():
     threads = mongo.db.threads
@@ -76,7 +76,7 @@ def get_replies(thread_id):
     return JSONEncoder().encode(output)
 
 
-# POST метод по URL '/api/threads/' для создания нового треда.
+# POST метод по URL '/api/threads' для создания нового треда.
 # Необходимые поля: text, delete_password
 @app.route('/api/threads', methods=['POST'])
 def create_thread():
@@ -111,9 +111,11 @@ def create_thread():
         # Параметра не хватает
         return 'Not all parameters sent!'
 
-    return JSONEncoder().encode(output)
+    return 'Success'
 
 
+# POST метод по URL '/api/replies' для ответа в тред
+# Необходимые поля: text, thread_id, delete_password
 @app.route('/api/replies', methods=['POST'])
 def post_reply():
     threads = mongo.db.threads
@@ -134,6 +136,7 @@ def post_reply():
                         'replies': {
                             '_id': str(uuid.uuid4()),
                             'text': text,
+                            'delete_password': delete_password,
                             'created_on': getCurrTime()
                         }
                     },
@@ -143,7 +146,7 @@ def post_reply():
                     }
 
             })
-            return 'Success'
+            return JSONEncoder().encode(thread)
         else:
             # Тред не найден
             return 'Thread not found'
@@ -154,6 +157,7 @@ def post_reply():
         # Другая ошибка
         print(Exc)
         return 'Something went wrong'
+
 
 # Удалить все треды
 @app.route('/api/deleteAll', methods=['DELETE'])
@@ -167,6 +171,8 @@ def delete_all():
         print(e)
 
 
+# DELETE метод по URL '/api/threads' для удаления треда.
+# Необходимые поля: thread_id, delete_password
 @app.route('/api/threads', methods=['DELETE'])
 def delete_thread():
     threads = mongo.db.threads
@@ -196,3 +202,57 @@ def delete_thread():
         print(e)
         return 'Something went wrong'
 
+
+# DELETE метод по URL '/api/replies' для удаления ответа.
+# Удаление ответа - замена его текста на '[deleted]'!!
+# Необходимые поля: thread_id, reply_id, delete_password
+@app.route('/api/replies', methods=['DELETE'])
+def delete_post():
+    threads = mongo.db.threads
+    
+    #  Получение thread_id из запроса
+    try:
+        thread_id = ObjectId(request.json['thread_id'])
+    except Exception:
+        return 'Bad thread_id'
+
+    # Получение запроса
+    delete_password = request.json['delete_password']
+    reply_id = request.json['reply_id']
+
+    thread = threads.find_one({'_id': thread_id})
+
+    if thread:
+        # Если тред найден
+
+        # флаг, станет True если удалится ответ
+        flag = False
+        for reply in thread['replies']:
+            print(reply)
+            print(reply['delete_password'])
+
+            if reply['_id'] == reply_id:
+                flag = True
+
+                if reply['delete_password'] == delete_password:
+                    # Пароль верный
+                    new_replies = []
+                    for r in thread['replies']:
+                        if r['_id'] == reply_id:
+                            r['text'] = '[deleted]'
+                        new_replies.append(r)
+                    threads.update({'_id': thread_id}, {'$set': {
+                        'replies': new_replies
+                    }})
+                    return 'Right password;'
+                else:
+                    # Пароль неверный
+                    return 'Wrong password'
+
+                break
+        if not flag:
+            # флаг не стал True => ответ не найден
+            return 'No reply found'
+    else:
+        # Тред не найден
+        return 'No thread found'
