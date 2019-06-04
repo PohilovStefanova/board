@@ -1,8 +1,10 @@
 from flask import Flask, jsonify, request
 from flask_pymongo import PyMongo, ObjectId
+
 import json
 from bson import ObjectId
 import uuid
+
 import datetime
 
 
@@ -159,18 +161,6 @@ def post_reply():
         return 'Something went wrong'
 
 
-# Удалить все треды
-@app.route('/api/deleteAll', methods=['DELETE'])
-def delete_all():
-    try:
-        threads = mongo.db.threads
-        threads.remove({})
-        return 'Success'
-    except Exception as e:
-        return e
-        print(e)
-
-
 # DELETE метод по URL '/api/threads' для удаления треда.
 # Необходимые поля: thread_id, delete_password
 @app.route('/api/threads', methods=['DELETE'])
@@ -226,31 +216,39 @@ def delete_post():
         # Если тред найден
 
         # флаг, станет True если удалится ответ
-        flag = False
+        was_deleted = False
         for reply in thread['replies']:
             print(reply)
             print(reply['delete_password'])
 
             if reply['_id'] == reply_id:
-                flag = True
+                was_deleted = True
 
                 if reply['delete_password'] == delete_password:
                     # Пароль верный
                     new_replies = []
                     for r in thread['replies']:
+                        # находим нужный ответ по _id и меняем текст на [deleted]
                         if r['_id'] == reply_id:
                             r['text'] = '[deleted]'
                         new_replies.append(r)
-                    threads.update({'_id': thread_id}, {'$set': {
-                        'replies': new_replies
-                    }})
+
+                    # верный запрос
+                    threads.update(
+                        {'_id': thread_id}, 
+                        {
+                            '$set': {
+                                'replies': new_replies
+                            }
+                        }
+                    )
                     return 'Right password;'
                 else:
                     # Пароль неверный
                     return 'Wrong password'
 
                 break
-        if not flag:
+        if not was_deleted:
             # флаг не стал True => ответ не найден
             return 'No reply found'
     else:
