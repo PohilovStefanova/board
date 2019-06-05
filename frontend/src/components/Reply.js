@@ -8,7 +8,7 @@ class Reply extends Component {
     render() {
         return (
             <React.Fragment >
-                <div id={this.props._id} className="reply">
+                <div className="reply">
                     <div className="reply-header">
                         <span className="reply-order">Anonymous</span>
                         <div className="reply-header-id">№{this.props.reply._id}</div>

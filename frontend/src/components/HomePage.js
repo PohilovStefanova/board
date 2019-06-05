@@ -16,7 +16,6 @@ class HomePage extends Component {
             .get('/api/threads')
             .then(res => {
                 this.setState({threads: res.data})
-                console.log(res.data)
             })
             .catch(err => console.log(err))
     }

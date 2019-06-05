@@ -4,9 +4,9 @@ import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 
 import AppNavbar from './components/AppNavbar';
 import HomePage from './components/HomePage';
-
+import AppFooter from './components/AppFooter'
 import {Container} from 'reactstrap';
-import Board from './components/Board';
+import Thread from './components/Thread';
 
 function App() {
     return (
@@ -16,9 +16,11 @@ function App() {
                 <Container>
                     <Switch>
                         <Route path="/" exact component={HomePage}/>
-                        <Route path="/:thread" exact component={Board}/>
+                        <Route path="/:thread" exact component={Thread}/>
                     </Switch>
+                    <AppFooter />
                 </Container>
+
             </Router>
         </div>
     );
