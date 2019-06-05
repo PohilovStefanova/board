@@ -6,6 +6,7 @@ import AppNavbar from './components/AppNavbar';
 import HomePage from './components/HomePage';
 
 import {Container} from 'reactstrap';
+import Board from './components/Board';
 
 function App() {
     return (
@@ -15,6 +16,7 @@ function App() {
                 <Container>
                     <Switch>
                         <Route path="/" exact component={HomePage}/>
+                        <Route path="/:thread" exact component={Board}/>
                     </Switch>
                 </Container>
             </Router>
