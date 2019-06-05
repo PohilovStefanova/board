@@ -10,6 +10,8 @@ import {
 
 import PostReply from './PostReply';
 import Reply from './Reply';
+import DeleteThreadForm from './DeleteThreadForm'
+
 import axios from 'axios';
 
 class Board extends Component {
@@ -47,6 +49,7 @@ class Board extends Component {
                     <Card>
                         <CardHeader className="thumbnail-header">
                             <i>№ {this.state.data._id}</i>
+                            <DeleteThreadForm thread_id={this.state.data._id}/>
                         </CardHeader>
                         <CardBody>
                             <CardTitle>{this.state.data.text}</CardTitle>

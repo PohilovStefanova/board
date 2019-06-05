@@ -39,21 +39,20 @@ class DeleteReplyForm extends Component {
         setTimeout(() => window.location.reload(), 1500);
     }
     handleSubmit = () => {
-        const {reply_id, thread_id} = this.props;
+        const {thread_id} = this.props;
         const delete_password = this.state.delete_password;
         const requestBody = {
-            reply_id,
             thread_id,
             delete_password
         }
         axios
-            .delete('/api/replies', {data: requestBody})
+            .delete('/api/threads', {data: requestBody})
             .then((res) => {
                 if (res.data !== 'Success') 
                     this.setState({alert: res.data})
                 else {
                     this.setState({spinner: true})
-                    setTimeout(() => window.location.reload(), 1500);
+                    setTimeout(() => window.location.href='/', 1500);
                 }
                 console.log(res.data)
             })
