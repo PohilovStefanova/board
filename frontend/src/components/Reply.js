@@ -6,6 +6,8 @@ class Reply extends Component {
         return date
     }
     render() {
+        let number;
+        if (this.props.number) number=<span className="reply-order">№{this.props.number}</span>
         return (
             <React.Fragment >
                 <div className="reply">
@@ -14,7 +16,10 @@ class Reply extends Component {
                         <div className="reply-header-id">№{this.props.reply._id}</div>
                     </div>
                     <div className="reply-body">{this.props.reply.text}</div>
-                    <div className="reply-footer">{this.formatDate(this.props.reply.created_on)}</div>
+                    <div className="reply-footer">
+                        {number?number:''}
+                        {this.formatDate(this.props.reply.created_on)}
+                    </div>
                 </div>
                 <br/>
             </React.Fragment>
