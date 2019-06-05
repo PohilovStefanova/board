@@ -55,7 +55,7 @@ class Board extends Component {
                                 .data
                                 .replies
                                 .map((reply, index, array) => {
-                                    return (<Reply key={index} number={index+1} reply={reply}/>)
+                                    return (<Reply key={index} thread_id={this.state.data._id} number={index+1} reply={reply}/>)
                                 })}
                         </CardBody>
                     </Card>

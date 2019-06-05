@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import DeleteReplyForm from './DeleteReplyForm';
 
 class Reply extends Component {
     state = {}
@@ -14,7 +15,11 @@ class Reply extends Component {
                     <div className="reply-header">
                         <span className="reply-order">Anonymous</span>
                         <div className="reply-header-id">№{this.props.reply._id}</div>
+                        {number?<DeleteReplyForm 
+                        thread_id={this.props.thread_id}
+                        reply_id={this.props.reply._id}/>:""}
                     </div>
+                    
                     <div className="reply-body">{this.props.reply.text}</div>
                     <div className="reply-footer">
                         {number?number:''}

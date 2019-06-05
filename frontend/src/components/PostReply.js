@@ -43,6 +43,7 @@ class PostReply extends Component {
             })
             .then(res => {
                 this.setState({spinner: true})
+                console.log(res.data)
                 setTimeout(() => window.location.href='/'+this.props.thread_id, 1000)
             })
             .catch(err => {
