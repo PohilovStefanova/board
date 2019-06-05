@@ -1,0 +1,93 @@
+.BoardPage {
+    text-align: center;
+    margin-top: 20px;
+}
+.BoardPage > a,
+.BoardPage > a:hover,
+.BoardPage > a:visited {
+    color: inherit;
+    text-decoration: inherit;
+}
+#boardHeader {
+    margin: 20px 0;
+    text-align: center;
+}
+.ThreadPage {
+    margin-top: 20px;
+}
+.ThreadPage > a > h1 {
+    text-align: center;
+}
+.ThreadPage > a,
+.ThreadPage > a:hover,
+.ThreadPage > a:visited {
+    color: inherit;
+    text-decoration: inherit;
+}
+.ThreadThumbnail {
+    text-align: left;
+}
+
+.reply {
+    display: inline-block;
+    width: auto;
+    min-width: 40%;
+    border-radius: 17px;
+    border: 1px solid #ddd;
+    background: rgb(250,250,250);
+    padding: 8px 15px;
+    transition-property: background;
+    transition-duration: 1.5s;
+    margin-bottom: 15px;
+}
+.reply-highlight {
+    background: #d8edff;
+}
+.reply-header {
+    font-size: 0.75em;
+    padding-bottom: 10px;
+    color: rgb(100, 100, 100);
+}
+.reply-order {
+    margin-right: 10px;
+    color: #629dd1;
+    font-size: 1.2em;
+    font-style: italic;
+    font-weight: 300;
+}
+.reply-header-id {
+    display: inline-block;
+    margin-left: 20px;
+}
+.reply-footer {
+    font-size: 0.8em;
+    padding-top: 10px;
+}
+.thumbnail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.post-form,
+.thread-form {
+    width: 500px;
+    margin: 0 auto;
+    text-align: center;
+}
+.footer {
+    height: 30px;
+}
+.delete-button {
+    position: relative;
+    float: right;
+    margin-left: 20px;
+    padding: 3px;
+    background: #ffaaaa;
+    border: 1px solid #ff3030;
+    border-radius: 5px;
+    outline: none;
+}
+.delete-button:active,
+.delete_button:focus {
+    outline: none;
+}
