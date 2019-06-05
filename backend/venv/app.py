@@ -1,25 +1,12 @@
 from flask import Flask, jsonify, request
 from flask_pymongo import PyMongo, ObjectId
 
-import json
 from bson import ObjectId
-import uuid
 
+import uuid
 import datetime
 
-
-# Класс для перевода в JSON
-class JSONEncoder(json.JSONEncoder):
-    def default(self, o):
-        if isinstance(o, ObjectId):
-            return str(o)
-        return json.JSONEncoder.default(self, o)
-
-
-# Функция получения времени в необходимом формате
-def getCurrTime():
-    now = datetime.datetime.now()
-    return now.strftime("%Y-%m-%d %H:%M:%S")
+from helpers import getCurrTime, JSONEncoder
 
 
 # Приложение
