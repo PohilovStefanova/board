@@ -1,4 +1,5 @@
 import json
+from bson import ObjectId
 
 # Функция для получения времени в необходимом формате
 def getCurrTime():
