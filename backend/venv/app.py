@@ -224,7 +224,7 @@ def delete_post():
                             }
                         }
                     )
-                    return 'Right password;'
+                    return 'Success'
                 else:
                     # Пароль неверный
                     return 'Wrong password'
@@ -232,7 +232,7 @@ def delete_post():
                 break
         if not was_deleted:
             # флаг не стал True => ответ не найден
-            return 'No reply found'
+            return 'Error! No reply found'
     else:
         # Тред не найден
-        return 'No thread found'
+        return 'Error! No thread found'
