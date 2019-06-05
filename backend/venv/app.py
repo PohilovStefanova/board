@@ -49,7 +49,7 @@ def get_threads():
             'text': doc['text'],
             'created_on': doc['created_on'],
             'updated_on': doc['updated_on'],
-            'replies': doc['replies']
+            'replies': doc['replies'][-3:]
         })
     
     # Сортировка output по updated_on
