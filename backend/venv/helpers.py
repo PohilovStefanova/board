@@ -1,5 +1,6 @@
 import json
 
+# Функция для получения времени в необходимом формате
 def getCurrTime():
     now = datetime.datetime.now()
     return now.strftime("%Y-%m-%d %H:%M:%S")

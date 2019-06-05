@@ -18,13 +18,7 @@ app.config["MONGO_URI"] = "mongodb://localhost:27017/myDatabase"
 mongo = PyMongo(app)
 
 
-# test
-@app.route('/')
-def hello_world():
-    return 'test test test'
-
-
-# GET метод по URL '/api/threads' для получения всех тредов.
+# GET @ '/api/threads' => All threads + 3 latest replies to each of them
 @app.route('/api/threads', methods=['GET'])
 def get_threads():
     threads = mongo.db.threads
@@ -44,7 +38,7 @@ def get_threads():
     return JSONEncoder().encode(output)
 
 
-# GET метод по URL '/api/replies/<thread_id>' для получения информаци о треде.
+# GET @ '/api/replies/<thread_id>' => Full thread info
 @app.route('/api/replies/<thread_id>', methods=['GET'])
 def get_replies(thread_id):
     threads = mongo.db.threads
@@ -65,8 +59,8 @@ def get_replies(thread_id):
     return JSONEncoder().encode(output)
 
 
-# POST метод по URL '/api/threads' для создания нового треда.
-# Необходимые поля: text, delete_password
+# POST @ '/api/threads' => Create a new thread
+# Needed request fields: text, delete_password
 @app.route('/api/threads', methods=['POST'])
 def create_thread():
     threads = mongo.db.threads
@@ -103,8 +97,8 @@ def create_thread():
     return 'Success'
 
 
-# POST метод по URL '/api/replies' для ответа в тред
-# Необходимые поля: text, thread_id, delete_password
+# POST @ '/api/replies' => Answer to the thread
+# Needed request fields: text, delete_password, thread_id
 @app.route('/api/replies', methods=['POST'])
 def post_reply():
     threads = mongo.db.threads
@@ -148,8 +142,8 @@ def post_reply():
         return 'Something went wrong'
 
 
-# DELETE метод по URL '/api/threads' для удаления треда.
-# Необходимые поля: thread_id, delete_password
+# DELETE @ '/api/threads' => Delete a thread
+# Request fields: thread_id, delete_password
 @app.route('/api/threads', methods=['DELETE'])
 def delete_thread():
     threads = mongo.db.threads
@@ -180,9 +174,10 @@ def delete_thread():
         return 'Something went wrong'
 
 
-# DELETE метод по URL '/api/replies' для удаления ответа.
-# Удаление ответа - замена его текста на '[deleted]'!!
-# Необходимые поля: thread_id, reply_id, delete_password
+# DELETE @ '/api/replies' => Delete a reply
+# Required fields: thread_id, reply_id, delete_password
+
+# DELETE A REPLY MEANS CHANGE ITS TEXT TO [deleted] !
 @app.route('/api/replies', methods=['DELETE'])
 def delete_post():
     threads = mongo.db.threads
