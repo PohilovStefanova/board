@@ -66,7 +66,7 @@ class DeleteReplyForm extends Component {
             <React.Fragment>
                 <button className="delete-button" onClick={this.toggle}>Delete</button>
                 <Modal isOpen={this.state.modal} toggle={this.toggle}>
-                    <ModalHeader toggle={this.toggle}>Modal title</ModalHeader>
+                    <ModalHeader toggle={this.toggle}>Delete a thread</ModalHeader>
 
                     <Form>
                         <ModalBody>
