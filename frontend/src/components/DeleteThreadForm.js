@@ -86,7 +86,7 @@ class DeleteReplyForm extends Component {
                                 : ""}
                         </ModalBody>
                         <ModalFooter>
-                            <Button color="primary" onClick={this.handleSubmit}>Do Something</Button>{' '}
+                            <Button color="danger" onClick={this.handleSubmit}>Delete</Button>{' '}
                             <Button color="secondary" onClick={this.toggle}>Cancel</Button>
                         </ModalFooter>
                     </Form>
